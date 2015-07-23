@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <ui:include src="/WEB-INF/template/imports.xhtml"/>
+    </h:head>    
+    <h:body>
+
+        <div class="container">
+            <div class="col-lg-4 col-lg-offset-4 centro">
+                <div class="row">
+                    <h:form>
+                        <div class="panel panel-primary" >
+                            <div class="panel-heading">
+                                Login
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <h:outputLabel for="usuario" value="Usuário"/>
+                                    <h:inputText id="descricao" class="form-control" value="#{loginBean.usuario.login}" required="true"/>
+                                </div>
+                                <div class="form-group">
+                                    <h:outputLabel for="senha" value="Senha"/>
+                                    <h:inputText id="senha" class="form-control" value="#{loginBean.usuario.senha}" required="true"/>
+                                </div>
+                                <h:commandButton value="Entrar" class="btn btn-primary btn-lg btn-block" id="salvar" action="#{loginBean.logar()}" />
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

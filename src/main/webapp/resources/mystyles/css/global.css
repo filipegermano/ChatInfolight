@@ -1,0 +1,40 @@
+body {
+    background-color: #f9f9f9;    
+}
+
+.centro{
+    padding-top: 80px;
+    padding-bottom: 30px;
+}
+
+.link-dropdown-menu{
+    padding: 3px 20px;
+    color: #7B8A8B;
+    background-color: transparent;
+    text-decoration: none;
+    display: block;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857;
+    white-space: nowrap;
+}
+
+.link-dropdown-menu:hover{
+    color: white;
+    text-decoration: none;
+    background-color: #2C3E50;
+}
+/*.centro-vertival{
+    vertical-align: middle;
+    overflow-y: scroll;    
+}*/
+
+/*.centro-vertival{
+    display: flex;
+    align-items: center;
+}*/
+
+.centro-vertival{        
+    overflow-y: scroll;
+    height: 500px;
+}

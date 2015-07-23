@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  template="/WEB-INF/template/Layout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="titulo">Conversas</ui:define>
+
+    <ui:define name="css-chat">
+        <link rel="stylesheet" type="text/css" media="screen" href="/ChatInfolight/resources/mystyles/css/chat.css"/>
+    </ui:define>    
+
+    <ui:define name="corpo">        
+        <div class="centro">                        
+            <!--<div class="container">-->
+            <!--<div class="row">-->                
+            <div class="col-lg-9 col-lg-offset-1">                                                    
+                <c:if test="#{loginBean.usuarioLogado.tipoUsuario == 'Consultor'}">
+                    <div class="col-lg-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-user"></span> Usuarios
+                            </div>
+                            <div class="panel-body">
+                                <ul class="chat">
+                                    <c:forEach var="usuario" items="#{chatBean.usuarios}">
+                                        <h:form>
+                                            <li class="left clearfix">                                            
+                                                <span class="chat-img pull-left">
+                                                    <c:if test="#{usuario.tipoUsuario != 'Consultor'}">
+                                                        <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                             alt="User Avatar" class="img-circle" />
+                                                    </c:if>
+                                                    <c:if test="#{usuario.tipoUsuario == 'Consultor'}">
+                                                        <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                             alt="User Avatar" class="img-circle" />
+                                                    </c:if>
+                                                </span>                                                
+                                                <div class="chat-body clearfix">
+                                                    <div class="header">
+                                                        <strong class="primary-font">
+                                                            <h:commandLink action="#{chatBean.preparaConversa(loginBean.usuarioLogado, usuario)}" value="#{usuario.nome}"/>
+                                                        </strong>                                                        
+                                                    </div>
+                                                    <p>#{usuario.setor.descricao}, #{usuario.empresa.nomeFantasia}, #{usuario.empresa.municipio} - #{usuario.empresa.uf}</p>
+                                                </div>
+                                            </li>
+                                        </h:form>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- Fim de lista de usuários -->
+                </c:if>
+
+
+                <div class="col-lg-8">
+                    <div class="panel panel-primary">
+
+
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-comment"></span> Conversas
+                            <div class="btn-group pull-right">
+                                <button type="button"
+                                        class="btn btn-default btn-xs dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                </button>
+                                <ul class="dropdown-menu slidedown">
+                                    <li><a href="#"><span
+                                                class="glyphicon glyphicon-refresh"> </span>Atualizar</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="panel-body" id="pnl-msg">
+                            <h:form>
+                                <p:poll interval="5" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
+                                <p:outputPanel id="msg_ajax" >
+                                    <ul class="chat">
+                                        <c:forEach var="mensagem" items="#{chatBean.mensagens}">
+
+                                            <c:if test="#{not chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                <li class="left clearfix">
+                                                    <span class="chat-img pull-left">
+                                                        <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                            <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                 alt="User Avatar" class="img-circle" />
+                                                        </c:if>
+                                                        <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                            <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                 alt="User Avatar" class="img-circle" />
+                                                        </c:if>
+                                                    </span>
+                                                    <div class="chat-body clearfix">
+                                                        <div class="header">
+                                                            <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
+                                                            <small class="pull-right text-muted">
+                                                                <span class="glyphicon glyphicon-time"></span>1 min ago
+                                                            </small>
+                                                        </div>
+                                                        <p>#{mensagem.mensagem}</p>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="#{chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                <li class="right clearfix">
+                                                    <span class="chat-img pull-right">
+                                                        <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                            <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                 alt="User Avatar" class="img-circle" />
+                                                        </c:if>
+                                                        <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                            <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                 alt="User Avatar" class="img-circle" />
+                                                        </c:if>                                                
+                                                    </span>
+                                                    <div class="chat-body clearfix">
+                                                        <div class="header">
+                                                            <small class=" text-muted">
+                                                                <span class="glyphicon glyphicon-time"></span>2 min ago
+                                                            </small>
+                                                            <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
+                                                        </div>
+                                                        <p>#{mensagem.mensagem}</p>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>                                    
+                                    </ul>
+                                </p:outputPanel>
+                            </h:form>
+                        </div>
+
+
+
+                        <h:form>
+                            <c:if test="#{destinatarioBean.exiteDestinatario()}">
+                                <div class="panel-footer">
+                                    <div class="input-group">
+
+                                        <h:inputText id="btn-input" class="form-control input-sm" value="#{chatBean.mensagem.mensagem}"/>
+
+                                        <span class="input-group-btn">
+                                            <p:commandButton class="btn btn-warning btn-sm"
+                                                             actionListener="#{chatBean.salvar(loginBean.usuarioLogado, destinatarioBean.destinatario)}" 
+                                                             value="Enviar" id="btn-chat"/>
+
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </c:if>
+                        </h:form>
+                    </div>
+                </div>
+
+            </div>
+            <!--</div>-->
+        </div>
+
+    </ui:define>
+</ui:composition>
+

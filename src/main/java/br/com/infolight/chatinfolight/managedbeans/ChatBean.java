@@ -5,7 +5,6 @@ import br.com.infolight.chatinfolight.entidades.Usuario;
 import br.com.infolight.chatinfolight.persistencia.MensagemDao;
 import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,7 @@ public class ChatBean implements Serializable {
     @Inject    
     private DestinatarioBean destinatarioBean;            
     private Mensagem mensagem;
-    
+    private Boolean atualizaScroll;    
     private List<Mensagem> mensagens;
     private List<Usuario> usuarios;
             
@@ -58,13 +57,16 @@ public class ChatBean implements Serializable {
         parametros.put("remetente", remetente);
         parametros.put("destinatario", destinatario);
         
+        Integer tamanhoAnterior = getMensagens() != null ? getMensagens().size() : 0;
         setMensagens(mensagemDao.listar(Mensagem.LISTA_POR_DESTINATARIO, parametros));
         Collections.sort(getMensagens());                
+        Integer tamanhoAtual = getMensagens() != null ? getMensagens().size() : 0;
         
-        for (Mensagem mensagen : getMensagens()) {
-            System.out.println(mensagen.getRemetente().getLogin() + " - " + mensagen.getMensagem());
-            
-        }
+        verificaSizeMensagens(tamanhoAnterior, tamanhoAtual);
+    }
+    
+    private void verificaSizeMensagens(Integer tamanhoAnterior, Integer tamanhoAtual){
+        setAtualizaScroll(tamanhoAnterior < tamanhoAtual);
     }
     
     public Boolean verificaRemetente(Usuario usuarioLogado, Usuario remetente){
@@ -98,6 +100,14 @@ public class ChatBean implements Serializable {
 
     public DestinatarioBean getDestinatarioBean() {
         return destinatarioBean;
-    }                
+    }
+
+    public Boolean getAtualizaScroll() {
+        return atualizaScroll;
+    }
+
+    public void setAtualizaScroll(Boolean atualizaScroll) {
+        this.atualizaScroll = atualizaScroll;
+    }        
         
 }

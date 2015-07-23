@@ -5,9 +5,7 @@ import br.com.infolight.chatinfolight.entidades.Usuario;
 import br.com.infolight.chatinfolight.persistencia.MensagemDao;
 import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +25,7 @@ public class DestinatarioBean implements Serializable {
 
     private Usuario destinatario;
     private List<Mensagem> mensagens;
+    
 
     public DestinatarioBean() {
         setDestinatario(new Usuario());
@@ -54,5 +53,7 @@ public class DestinatarioBean implements Serializable {
     public void setMensagens(List<Mensagem> mensagens) {
         this.mensagens = mensagens;
     }
+    
+    
 
 }

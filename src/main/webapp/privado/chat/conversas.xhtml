@@ -42,7 +42,9 @@
                                                     <div class="header">
                                                         <strong class="primary-font">
                                                             <h:commandLink action="#{chatBean.preparaConversa(loginBean.usuarioLogado, usuario)}" value="#{usuario.nome}"/>
-                                                        </strong>                                                        
+                                                        </strong>
+                                                        <span class="badge pull-right">4</span>
+                                                        <span class="glyphicon glyphicon-ok pull-right btn-success"/>
                                                     </div>
                                                     <p>#{usuario.setor.descricao}, #{usuario.empresa.nomeFantasia}, #{usuario.empresa.municipio} - #{usuario.empresa.uf}</p>
                                                 </div>
@@ -74,9 +76,18 @@
                                 </ul>
                             </div>
                         </div>
+
+
                         <div class="panel-body" id="pnl-msg">
+
+
+                            <script>
+                                window.setInterval('atualizaScroll()', 500);
+                            </script>
+
+
                             <h:form>
-                                <p:poll interval="5" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
+                                <p:poll interval="1" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
                                 <p:outputPanel id="msg_ajax" >
                                     <ul class="chat">
                                         <c:forEach var="mensagem" items="#{chatBean.mensagens}">

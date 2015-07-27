@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +27,14 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Mensagem.listaTodas",
             query = "SELECT m FROM Mensagem m ORDER BY m.dataEnvio"),
     @NamedQuery(name = "Mensagem.listaPorDestinatario",
-            query = "SELECT m FROM Mensagem m WHERE (m.remetente = :remetente OR m.destinatario = :remetente) AND (m.remetente = :destinatario OR m.destinatario = :destinatario) ORDER BY m.id")
+            query = "SELECT m FROM Mensagem m WHERE (m.remetente = :remetente OR m.destinatario = :remetente) AND (m.remetente = :destinatario OR m.destinatario = :destinatario) ORDER BY m.id"),
+    @NamedQuery(name = "Mensagem.listaPorLogadoRemetenteDestinatario",
+            query = "SELECT m FROM Mensagem m WHERE (m.destinatario = :destinatario or m.remetente = :destinatario) or (m.remetente.tipoUsuario = 'Consultor' and m.destinatario = :destinatario) ORDER BY m.dataEnvio"),
+    @NamedQuery(name = "Mensagem.listaParaCliente",
+            query = "SELECT m FROM Mensagem m WHERE (m.remetente = :destinatario OR m.destinatario = :destinatario) ORDER BY m.dataEnvio"),
+    @NamedQuery(name = "Mensagem.listaEnviadoPorRemetente",
+            query = "SELECT m FROM Mensagem m WHERE (m.statusMensagem = 'Enviado') AND (m.remetente = :remetente)")
+        
 })
 public class Mensagem implements Serializable, Comparable<Mensagem> {
 
@@ -34,7 +43,14 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
     @Transient
     public static final String LISTA_TODAS_MENSAGENS = "Mensagem.listaTodas";
     @Transient
+    public static final String LISTA_ENVIADAS_POR_REMETENTE = "Mensagem.listaEnviadoPorRemetente";
+    @Transient
+    public static final String LISTA_POR_LOGADO_REMETENTE_DESTINATARIO = "Mensagem.listaPorLogadoRemetenteDestinatario";
+    @Transient
     public static final String LISTA_POR_DESTINATARIO = "Mensagem.listaPorDestinatario";
+    @Transient
+    public static final String LISTA_PARA_CLIENTE = "Mensagem.listaParaCliente";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +64,8 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
     private Calendar dataEnvio = new GregorianCalendar();
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataRecebimento;
-    private StatusMensagem statusMensagem;
+    @Enumerated(EnumType.STRING)
+    private StatusMensagem statusMensagem = StatusMensagem.Enviado;
 
     public Long getId() {
         return id;
@@ -137,9 +154,4 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
         }
         return 0;
     }
-    
-    
-    
-    
-
 }

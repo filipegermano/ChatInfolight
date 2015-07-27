@@ -14,17 +14,18 @@
 
     <ui:define name="corpo">        
         <div class="centro">                        
-            <!--<div class="container">-->
-            <!--<div class="row">-->                
-            <div class="col-lg-9 col-lg-offset-1">                                                    
-                <c:if test="#{loginBean.usuarioLogado.tipoUsuario == 'Consultor'}">
+            <!--usuario-->
+
+            <c:if test="#{loginBean.usuarioLogado.tipoUsuario == 'Consultor'}">
+                <div class="col-lg-9 col-lg-offset-1">
+
                     <div class="col-lg-4">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
                                 <span class="glyphicon glyphicon-user"></span> Usuarios
                             </div>
                             <div class="panel-body">
-                                <ul class="chat">
+                                <ul class="chat">                                    
                                     <c:forEach var="usuario" items="#{chatBean.usuarios}">
                                         <h:form>
                                             <li class="left clearfix">                                            
@@ -37,117 +38,123 @@
                                                         <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
                                                              alt="User Avatar" class="img-circle" />
                                                     </c:if>
-                                                </span>                                                
+                                                </span> 
+
                                                 <div class="chat-body clearfix">
                                                     <div class="header">
                                                         <strong class="primary-font">
                                                             <h:commandLink action="#{chatBean.preparaConversa(loginBean.usuarioLogado, usuario)}" value="#{usuario.nome}"/>
                                                         </strong>
-                                                        <span class="badge pull-right">4</span>
-                                                        <span class="glyphicon glyphicon-ok pull-right btn-success"/>
+                                                        <span class="badge pull-right">
+                                                            <p:poll interval="1" listener="#{chatBean.verificaPendentes(usuario)}" update="qtde_msg_ajax" />
+                                                            <p:outputPanel id="qtde_msg_ajax" >
+                                                                #{chatBean.mensagensPendentes}
+                                                            </p:outputPanel>
+                                                        </span>
                                                     </div>
                                                     <p>#{usuario.setor.descricao}, #{usuario.empresa.nomeFantasia}, #{usuario.empresa.municipio} - #{usuario.empresa.uf}</p>
                                                 </div>
+
                                             </li>
                                         </h:form>
-                                    </c:forEach>
+                                    </c:forEach>                                                                  
                                 </ul>
                             </div>
                         </div>
-                    </div> <!-- Fim de lista de usuários -->
-                </c:if>
+                    </div> <!-- Fim de lista de usuários -->                
 
 
-                <div class="col-lg-8">
-                    <div class="panel panel-primary">
+                    <div class="col-lg-8">
+                        <div class="panel panel-primary">
 
 
-                        <div class="panel-heading">
-                            <span class="glyphicon glyphicon-comment"></span> Conversas
-                            <div class="btn-group pull-right">
-                                <button type="button"
-                                        class="btn btn-default btn-xs dropdown-toggle"
-                                        data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-chevron-down"></span>
-                                </button>
-                                <ul class="dropdown-menu slidedown">
-                                    <li><a href="#"><span
-                                                class="glyphicon glyphicon-refresh"> </span>Atualizar</a></li>
-                                </ul>
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-comment"></span> Conversas
+                                <div class="btn-group pull-right">
+                                    <button type="button"
+                                            class="btn btn-default btn-xs dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                    </button>
+                                    <ul class="dropdown-menu slidedown">
+                                        <li><a href="#"><span
+                                                    class="glyphicon glyphicon-refresh"> </span>Atualizar</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
 
 
-                        <div class="panel-body" id="pnl-msg">
+                            <div class="panel-body" id="pnl-msg">
 
 
-                            <script>
-                                window.setInterval('atualizaScroll()', 500);
-                            </script>
+                                <script>
+                                    window.setInterval('atualizaScroll()', 500);
+                                </script>
+
+
+                                <h:form>
+                                    <p:poll interval="1" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
+                                    <p:outputPanel id="msg_ajax" >
+                                        <ul class="chat">
+                                            <c:forEach var="mensagem" items="#{chatBean.mensagens}">
+
+                                                <c:if test="#{not chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                    <li class="left clearfix">
+                                                        <span class="chat-img pull-left">
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                        </span>
+                                                        <div class="chat-body clearfix">
+                                                            <div class="header">
+                                                                <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
+                                                                <small class="pull-right text-muted">
+                                                                    <span class="glyphicon glyphicon-time"></span>1 min ago
+                                                                </small>
+                                                            </div>
+                                                            <p>#{mensagem.mensagem}</p>
+                                                        </div>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="#{chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                    <li class="right clearfix">
+                                                        <span class="chat-img pull-right">
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>                                                
+                                                        </span>
+                                                        <div class="chat-body clearfix">
+                                                            <div class="header">
+                                                                <small class=" text-muted">
+                                                                    <span class="glyphicon glyphicon-time"></span>2 min ago
+                                                                </small>
+                                                                <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
+                                                            </div>
+                                                            <p>#{mensagem.mensagem}</p>
+                                                        </div>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>                                    
+                                        </ul>
+                                    </p:outputPanel>
+                                </h:form>
+                            </div>
+
 
 
                             <h:form>
-                                <p:poll interval="1" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
-                                <p:outputPanel id="msg_ajax" >
-                                    <ul class="chat">
-                                        <c:forEach var="mensagem" items="#{chatBean.mensagens}">
-
-                                            <c:if test="#{not chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
-                                                <li class="left clearfix">
-                                                    <span class="chat-img pull-left">
-                                                        <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
-                                                            <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
-                                                                 alt="User Avatar" class="img-circle" />
-                                                        </c:if>
-                                                        <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
-                                                            <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
-                                                                 alt="User Avatar" class="img-circle" />
-                                                        </c:if>
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
-                                                            <small class="pull-right text-muted">
-                                                                <span class="glyphicon glyphicon-time"></span>1 min ago
-                                                            </small>
-                                                        </div>
-                                                        <p>#{mensagem.mensagem}</p>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                            <c:if test="#{chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
-                                                <li class="right clearfix">
-                                                    <span class="chat-img pull-right">
-                                                        <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
-                                                            <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
-                                                                 alt="User Avatar" class="img-circle" />
-                                                        </c:if>
-                                                        <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
-                                                            <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
-                                                                 alt="User Avatar" class="img-circle" />
-                                                        </c:if>                                                
-                                                    </span>
-                                                    <div class="chat-body clearfix">
-                                                        <div class="header">
-                                                            <small class=" text-muted">
-                                                                <span class="glyphicon glyphicon-time"></span>2 min ago
-                                                            </small>
-                                                            <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
-                                                        </div>
-                                                        <p>#{mensagem.mensagem}</p>
-                                                    </div>
-                                                </li>
-                                            </c:if>
-                                        </c:forEach>                                    
-                                    </ul>
-                                </p:outputPanel>
-                            </h:form>
-                        </div>
 
 
-
-                        <h:form>
-                            <c:if test="#{destinatarioBean.exiteDestinatario()}">
                                 <div class="panel-footer">
                                     <div class="input-group">
 
@@ -162,13 +169,127 @@
 
                                     </div>
                                 </div>
-                            </c:if>
-                        </h:form>
+                            </h:form>
+                        </div>
                     </div>
-                </div>
+                </div>            
+            </c:if>
 
-            </div>
-            <!--</div>-->
+            <!--fim usuario-->                                        
+
+            <c:if test="#{loginBean.usuarioLogado.tipoUsuario != 'Consultor'}">
+                <div class="col-lg-9 col-lg-offset-3">
+
+                    <div class="col-lg-8">
+                        <div class="panel panel-primary">
+
+
+                            <div class="panel-heading">
+                                <span class="glyphicon glyphicon-comment"></span> Conversas
+                                <div class="btn-group pull-right">
+                                    <button type="button"
+                                            class="btn btn-default btn-xs dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                    </button>
+                                    <ul class="dropdown-menu slidedown">
+                                        <li><a href="#"><span
+                                                    class="glyphicon glyphicon-refresh"> </span>Atualizar</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <div class="panel-body" id="pnl-msg">
+
+
+                                <script>
+                                    window.setInterval('atualizaScroll()', 500);
+                                </script>
+
+
+                                <h:form>
+                                    <p:poll interval="1" listener="#{chatBean.preparaConversa(loginBean.usuarioLogado, destinatarioBean.destinatario)}" update="msg_ajax" />
+                                    <p:outputPanel id="msg_ajax" >
+                                        <ul class="chat">
+                                            <c:forEach var="mensagem" items="#{chatBean.mensagens}">
+
+                                                <c:if test="#{not chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                    <li class="left clearfix">
+                                                        <span class="chat-img pull-left">
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                        </span>
+                                                        <div class="chat-body clearfix">
+                                                            <div class="header">
+                                                                <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
+                                                                <small class="pull-right text-muted">
+                                                                    <span class="glyphicon glyphicon-time"></span>1 min ago
+                                                                </small>
+                                                            </div>
+                                                            <p>#{mensagem.mensagem}</p>
+                                                        </div>
+                                                    </li>
+                                                </c:if>
+                                                <c:if test="#{chatBean.verificaRemetente(loginBean.usuarioLogado, mensagem.remetente)}">
+                                                    <li class="right clearfix">
+                                                        <span class="chat-img pull-right">
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario != 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-user.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>
+                                                            <c:if test="#{mensagem.remetente.tipoUsuario == 'Consultor'}">
+                                                                <img src="/ChatInfolight/resources/mystyles/img/default-consult.png"
+                                                                     alt="User Avatar" class="img-circle" />
+                                                            </c:if>                                                
+                                                        </span>
+                                                        <div class="chat-body clearfix">
+                                                            <div class="header">
+                                                                <small class=" text-muted">
+                                                                    <span class="glyphicon glyphicon-time"></span>2 min ago
+                                                                </small>
+                                                                <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
+                                                            </div>
+                                                            <p>#{mensagem.mensagem}</p>
+                                                        </div>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>                                    
+                                        </ul>
+                                    </p:outputPanel>
+                                </h:form>
+                            </div>
+
+
+
+                            <h:form>
+
+
+                                <div class="panel-footer">
+                                    <div class="input-group">
+
+                                        <h:inputText id="btn-input" class="form-control input-sm" value="#{chatBean.mensagem.mensagem}"/>
+
+                                        <span class="input-group-btn">
+                                            <p:commandButton class="btn btn-warning btn-sm"
+                                                             actionListener="#{chatBean.salvar(loginBean.usuarioLogado, destinatarioBean.destinatario)}" 
+                                                             value="Enviar" id="btn-chat"/>
+
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>            
+            </c:if>
         </div>
 
     </ui:define>

@@ -23,9 +23,12 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Usuario.buscaPorLoginSenha",
             query = "SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha"),
     @NamedQuery(name = "Usuario.listaClientes",
-            query = "SELECT u FROM Usuario u"),
+            query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = 'Cliente'"),
     @NamedQuery(name = "Usuario.recuperaPorId",
-            query = "SELECT u FROM Usuario u WHERE u.id = :id")
+            query = "SELECT u FROM Usuario u WHERE u.id = :id"),
+    @NamedQuery(name = "Usuario.listaParaCliente",
+            query = "SELECT u FROM Usuario u WHERE u.id = 1")
+
 })
 public class Usuario implements Serializable {
 
@@ -36,8 +39,10 @@ public class Usuario implements Serializable {
     @Transient
     public static final String LISTA_TODOS_CLIENTES = "Usuario.listaClientes";
     @Transient
+    public static final String LISTA_PARA_CLIENTE = "Usuario.listaParaCliente";
+    @Transient
     public static final String RECUPERA_POR_ID = "Usuario.recuperaPorId";
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -117,7 +122,7 @@ public class Usuario implements Serializable {
 
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
-    }    
+    }
 
     @Override
     public int hashCode() {

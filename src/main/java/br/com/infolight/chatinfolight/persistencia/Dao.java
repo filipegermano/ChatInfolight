@@ -39,14 +39,14 @@ public class Dao<T> implements Serializable {
     }
 
     public List<T> listar(String namedQuery) {
-        manager.getTransaction().begin();
+//        manager.getTransaction().begin();
         List<T> lista = manager.createNamedQuery(namedQuery).getResultList();
-        manager.getTransaction().commit();
+//        manager.getTransaction().commit();
         return lista;
     }
 
     public List<T> listar(String namedQuery, Map<String, Object> parametros) {
-        manager.getTransaction().begin();
+//        manager.getTransaction().begin();
         Query query = manager.createNamedQuery(namedQuery);
         if (parametros != null) {
             for (Map.Entry<String, Object> entry : parametros.entrySet()) {
@@ -55,7 +55,7 @@ public class Dao<T> implements Serializable {
                 query.setParameter(param, valor);
             }
         }
-        manager.getTransaction().commit();
+//        manager.getTransaction().commit();
         return query.getResultList();
     }
     

@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="ChatInfolight_PU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/chatinfolight"/>
-      <property name="javax.persistence.jdbc.user" value="postgres"/>
-      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="123456"/>
-      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="True"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="ChatInfolight_PU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+      
+            <!--Conexão remota-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-197-241-91.compute-1.amazonaws.com/d15j19uaa9b264?djqerzxkculpdq=djqerzxkculpdq&amp;password=TRUDZJAMwsFnWDYl87ejDfU5uY&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>                  
+            <property name="javax.persistence.jdbc.user" value="djqerzxkculpdq"/>
+            <property name="javax.persistence.jdbc.password" value="TRUDZJAMwsFnWDYl87ejDfU5uY"/>
+            
+      
+            <!--Conexão Local-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/chatinfolight"/>-->
+            <!--<property name="javax.persistence.jdbc.user" value="postgres"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="123456"/>-->
+      
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="True"/>
+        </properties>
+    </persistence-unit>
 </persistence>

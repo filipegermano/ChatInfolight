@@ -152,7 +152,7 @@
 
 
 
-                            <h:form>
+                            <h:form id="input-msg">
 
 
                                 <div class="panel-footer">
@@ -163,7 +163,7 @@
                                         <span class="input-group-btn">
                                             <p:commandButton class="btn btn-warning btn-sm"
                                                              actionListener="#{chatBean.salvar(loginBean.usuarioLogado, destinatarioBean.destinatario)}" 
-                                                             value="Enviar" id="btn-chat"/>
+                                                             value="Enviar" id="btn-chat" update="input-msg"/>
 
                                         </span>
 
@@ -268,7 +268,7 @@
 
 
 
-                            <h:form>
+                            <h:form id="input-msg">
 
 
                                 <div class="panel-footer">
@@ -279,7 +279,7 @@
                                         <span class="input-group-btn">
                                             <p:commandButton class="btn btn-warning btn-sm"
                                                              actionListener="#{chatBean.salvar(loginBean.usuarioLogado, destinatarioBean.destinatario)}" 
-                                                             value="Enviar" id="btn-chat"/>
+                                                             value="Enviar" id="btn-chat" update="input-msg"/>
 
                                         </span>
 

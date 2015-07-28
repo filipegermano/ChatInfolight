@@ -146,10 +146,10 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
     }
 
     public int compareTo(Mensagem t) {
-        if (this.id < t.id){
+        if (this.dataEnvio.getTimeInMillis() < t.dataEnvio.getTimeInMillis()){
             return -1;
         }
-        if (this.id > t.id){
+        if (this.dataEnvio.getTimeInMillis() > t.dataEnvio.getTimeInMillis()){
             return 1;
         }
         return 0;

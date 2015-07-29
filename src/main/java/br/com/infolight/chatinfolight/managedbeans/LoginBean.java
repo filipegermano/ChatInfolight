@@ -1,8 +1,13 @@
 package br.com.infolight.chatinfolight.managedbeans;
 
+import br.com.infolight.chatinfolight.entidades.Empresa;
 import br.com.infolight.chatinfolight.entidades.Usuario;
+import br.com.infolight.chatinfolight.persistencia.EmpresaDao;
 import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,30 +22,57 @@ public class LoginBean implements Serializable {
 
     @Inject
     private UsuarioDao usuarioDao;
+    @Inject
+    private EmpresaDao empresaDao;
 
-    private Usuario usuario;    
+    private Usuario usuario;
     private Usuario usuarioLogado;
-    private Boolean logado;        
-    
-    public LoginBean() {
-        setUsuario(new Usuario());
-    }
+    private Boolean logado;
 
-    public String logar() {        
+    private String login;
+    private String senha;
+    private String cargo;
+    private String cnpjEmpresa;
+    private String nome;
+
+    public LoginBean() {
+        setUsuario(new Usuario());        
+    }        
+
+    public String logar() {
+        getUsuario().setLogin(getLogin());
+        getUsuario().setSenha(getSenha());
+        getUsuario().setCargo(getCargo());
+
+        if (getNome() == null || getNome().equals("")) {
+            getUsuario().setNome(getLogin());
+        } else {
+            getUsuario().setNome(getNome());
+        }
+
+        if (getCnpjEmpresa() == null || getCnpjEmpresa().equals("")) {
+            Map<String, Object> parametros = new HashMap<String, Object>();
+            parametros.put("cnpj", "1");
+            getUsuario().setEmpresa(empresaDao.recuperaPorParametros(Empresa.RECUPERA_POR_CNPJ, parametros));
+        } else {
+            Map<String, Object> parametros = new HashMap<String, Object>();
+            parametros.put("cnpj", getCnpjEmpresa());
+            getUsuario().setEmpresa(empresaDao.recuperaPorParametros(Empresa.RECUPERA_POR_CNPJ, parametros));
+        }
+
         usuarioLogado = usuarioDao.logar(getUsuario());
-        
+
         if (usuarioLogado != null) {
-            setUsuario(usuarioLogado);            
+            setUsuario(usuarioLogado);
             setLogado(true);
             return "/privado/home.xhtml?faces-redirect=true";
-        }
-        else {
+        } else {
             setLogado(false);
             return "/publico/login.xhtml?faces-redirect=true";
         }
     }
-    
-    public String sair(){
+
+    public String sair() {
         setUsuarioLogado(null);
         setUsuario(new Usuario());
         setLogado(false);
@@ -53,7 +85,7 @@ public class LoginBean implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }    
+    }
 
     public Usuario getUsuarioLogado() {
         return usuarioLogado;
@@ -66,9 +98,53 @@ public class LoginBean implements Serializable {
     public Boolean getLogado() {
         return logado;
     }
-    
+
     public void setLogado(Boolean logado) {
         this.logado = logado;
-    }   
+    }
+
+    public String getLogin() {
+        System.out.println(login + " - " + senha);
+        return login;
+    }
+
+    public void setLogin(String login) {
+        System.out.println(login + " - " + senha);
+        this.login = login;
+    }
+
+    public String getSenha() {
+        System.out.println(login + " - " + senha);
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        System.out.println(login + " - " + senha);
+        this.senha = senha;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public String getCnpjEmpresa() {
+        return cnpjEmpresa;
+    }
+
+    public void setCnpjEmpresa(String cnpjEmpresa) {
+        this.cnpjEmpresa = cnpjEmpresa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
 }

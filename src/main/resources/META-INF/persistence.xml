@@ -6,15 +6,15 @@
         <properties>
       
             <!--Conexão remota-->
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-197-241-91.compute-1.amazonaws.com/d15j19uaa9b264?djqerzxkculpdq=djqerzxkculpdq&amp;password=TRUDZJAMwsFnWDYl87ejDfU5uY&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>                  
-            <property name="javax.persistence.jdbc.user" value="djqerzxkculpdq"/>
-            <property name="javax.persistence.jdbc.password" value="TRUDZJAMwsFnWDYl87ejDfU5uY"/>
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-197-241-91.compute-1.amazonaws.com/d15j19uaa9b264?djqerzxkculpdq=djqerzxkculpdq&amp;password=TRUDZJAMwsFnWDYl87ejDfU5uY&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>-->                  
+            <!--<property name="javax.persistence.jdbc.user" value="djqerzxkculpdq"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="TRUDZJAMwsFnWDYl87ejDfU5uY"/>-->
             
       
             <!--Conexão Local-->
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/chatinfolight"/>-->
-            <!--<property name="javax.persistence.jdbc.user" value="postgres"/>-->
-            <!--<property name="javax.persistence.jdbc.password" value="123456"/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/chatinfolight"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="123456"/>
       
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>

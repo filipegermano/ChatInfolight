@@ -3,14 +3,23 @@ package br.com.infolight.chatinfolight.entidades;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 /**
  *
  * @author filipe
  */
 @Entity
+@NamedQueries(value = {
+    @NamedQuery(name = "Empresa.recuperaPorCnpj", query = "SELECT e FROM Empresa e WHERE e.cnpj = :cnpj")
+})
 public class Empresa implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    @Transient
+    public static final String RECUPERA_POR_CNPJ = "Empresa.recuperaPorCnpj";
 
     @Id
     private Long id;

@@ -3,6 +3,7 @@ package br.com.infolight.chatinfolight.entidades;
 import br.com.infolight.chatinfolight.enums.Status;
 import br.com.infolight.chatinfolight.enums.TipoUsuario;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,7 +22,7 @@ import javax.persistence.Transient;
 @Entity
 @NamedQueries(value = {
     @NamedQuery(name = "Usuario.buscaPorLoginSenha",
-            query = "SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha"),
+            query = "SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha AND u.empresa = :empresa"),
     @NamedQuery(name = "Usuario.listaClientes",
             query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = 'Cliente'"),
     @NamedQuery(name = "Usuario.recuperaPorId",
@@ -51,10 +52,8 @@ public class Usuario implements Serializable {
     private String senha;
     @ManyToOne
     private Empresa empresa;
-    @ManyToOne
-    private Cargo cargo;
-    @ManyToOne
-    private Setor setor;
+    @Column(length = 80)
+    private String cargo;    
     @Enumerated(EnumType.STRING)
     private Status status;
     @Enumerated(EnumType.STRING)
@@ -100,20 +99,12 @@ public class Usuario implements Serializable {
         this.empresa = empresa;
     }
 
-    public Cargo getCargo() {
+    public String getCargo() {
         return cargo;
     }
 
-    public void setCargo(Cargo cargo) {
+    public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
-
-    public Setor getSetor() {
-        return setor;
-    }
-
-    public void setSetor(Setor setor) {
-        this.setor = setor;
     }
 
     public TipoUsuario getTipoUsuario() {
@@ -123,6 +114,14 @@ public class Usuario implements Serializable {
     public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }        
 
     @Override
     public int hashCode() {

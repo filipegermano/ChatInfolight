@@ -5,10 +5,12 @@ import br.com.infolight.chatinfolight.entidades.Usuario;
 import br.com.infolight.chatinfolight.enums.StatusMensagem;
 import br.com.infolight.chatinfolight.enums.TipoUsuario;
 import br.com.infolight.chatinfolight.persistencia.MensagemDao;
-import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +27,8 @@ import javax.inject.Named;
 @RequestScoped
 public class ChatBean implements Serializable {
 
-//    @Inject
-//    private MensagemDao mensagemDao;
-//    @Inject
-//    private UsuarioDao usuarioDao;
+    @Inject
+    private MensagemDao mensagemDao;
     @Inject
     private DestinatarioBean destinatarioBean;
     @Inject
@@ -48,10 +48,6 @@ public class ChatBean implements Serializable {
 
     @PostConstruct
     public void init() {
-//        setMensagens(mensagemDao.listar(Mensagem.LISTA_TODAS_MENSAGENS));
-        //setUsuariosParaCliente(usuarioDao.listar(Usuario.LISTA_PARA_CLIENTE));
-        
-        //setUsuarios(usuarioDao.listar(Usuario.LISTA_TODOS_CLIENTES));
         setUsuarios(clientesBean.getUsuarios());
     }
 
@@ -61,71 +57,42 @@ public class ChatBean implements Serializable {
         if (usuarioLogado.getTipoUsuario().name().equals(TipoUsuario.Consultor.name())) {
             getMensagem().setDestinatario(destinatario);
         } else {
-//            Map<String, Object> parametros = new HashMap<String, Object>();
-//            parametros.put("id", 1l);
-//            Usuario consultorPadrao = usuarioDao.recuperaPorParametros(Usuario.RECUPERA_POR_ID, parametros);
             Usuario consultorPadrao = clientesBean.getUsuarioPadrao();
             getMensagem().setDestinatario(consultorPadrao);
         }
         if ((getMensagem().getDestinatario() != null) && (getMensagem().getRemetente() != null) && (!getMensagem().getMensagem().equals(""))) {
-//            mensagemDao.salvar(getMensagem());
-
             getConversasBean().getConversa().add(getMensagem());
-
             setMensagem(new Mensagem());
         }
     }
 
     public void preparaConversa(Usuario remetente, Usuario destinatario) {
-        Map<String, Object> parametros = new HashMap<String, Object>();
-
-//        Map<String, Object> param = new HashMap<String, Object>();
-//        param.put("id", 1l);
-//        Usuario consultorPadrao = usuarioDao.recuperaPorParametros(Usuario.RECUPERA_POR_ID, param);
         Usuario consultorPadrao = clientesBean.getUsuarioPadrao();
 
         if (remetente.getTipoUsuario().name().equals(TipoUsuario.Consultor.name())) {
-            getDestinatarioBean().setDestinatario(destinatario);
-            parametros.put("destinatario", destinatario);
-
-            Map<String, Object> msgDest = new HashMap<String, Object>();
-            msgDest.put("remetente", destinatario);
-//            List<Mensagem> mensagensPendentes = mensagemDao.listar(Mensagem.LISTA_ENVIADAS_POR_REMETENTE, msgDest);
-//teste
-            List<Mensagem> mensagensPendentes = listaEnviadoPorRemetente(getConversasBean().getConversa(), destinatario);
-
-            for (Mensagem msg : mensagensPendentes) {
-                msg.setStatusMensagem(StatusMensagem.Entregue);
-//                mensagemDao.alterar(msg);
+            if (destinatario != null) {
+                getDestinatarioBean().setDestinatario(destinatario);
             }
 
+            List<Mensagem> mensagensPendentes = listaEnviadoPorRemetente(getConversasBean().getConversa(), destinatario);
+            for (Mensagem msg : mensagensPendentes) {
+                msg.setStatusMensagem(StatusMensagem.Entregue);
+                msg.setDataRecebimento(new GregorianCalendar());
+            }
             if ((destinatario.getId() != null) && (remetente.getId() != null)) {
-//                setMensagens(mensagemDao.listar(Mensagem.LISTA_POR_LOGADO_REMETENTE_DESTINATARIO, parametros));
-//teste                
-                setMensagens(listaPorTipoRemetenteDestinatario(getConversasBean().getConversa(), destinatario)    );
+                setMensagens(listaPorTipoRemetenteDestinatario(getConversasBean().getConversa(), destinatario));
                 Collections.sort(getMensagens());
             }
         } else {
             getDestinatarioBean().setDestinatario(consultorPadrao);
-            parametros.put("destinatario", remetente);
-
-            Map<String, Object> msgDest = new HashMap<String, Object>();
-            msgDest.put("remetente", consultorPadrao);
-//            List<Mensagem> mensagensPendentes = mensagemDao.listar(Mensagem.LISTA_ENVIADAS_POR_REMETENTE, msgDest);
-//teste
             List<Mensagem> mensagensPendentes = listaEnviadoPorRemetente(getConversasBean().getConversa(), consultorPadrao);
-
             for (Mensagem msg : mensagensPendentes) {
                 msg.setStatusMensagem(StatusMensagem.Entregue);
-//                mensagemDao.alterar(msg);
+                msg.setDataRecebimento(new GregorianCalendar());
             }
-
-//            setMensagens(mensagemDao.listar(Mensagem.LISTA_PARA_CLIENTE, parametros));
-//teste            
             setMensagens(listaParaCliente(getConversasBean().getConversa(), remetente));
             Collections.sort(getMensagens());
         }
-
     }
 
     private void verificaSizeMensagens(Integer tamanhoAnterior, Integer tamanhoAtual) {
@@ -184,12 +151,35 @@ public class ChatBean implements Serializable {
     public void verificaPendentes(Usuario remetente) {
         Map<String, Object> parametros = new HashMap<String, Object>();
         parametros.put("remetente", remetente);
-//        List<Mensagem> ms = mensagemDao.listar(Mensagem.LISTA_ENVIADAS_POR_REMETENTE, parametros);
-//teste
-        
         List<Mensagem> ms = listaEnviadoPorRemetente(getConversasBean().getConversa(), remetente);
         System.out.println("Enviados = " + ms.size());
-        setMensagensPendentes(ms.size());        
+        setMensagensPendentes(ms.size());
+    }
+
+    public void salvarConversas() {
+        List<Mensagem> mensagensParaGravar = getConversasBean().getConversa();
+        if (mensagensParaGravar != null && mensagensParaGravar.size() > 0) {
+            for (Mensagem conversa : mensagensParaGravar) {
+                if (!conversa.getStatusMensagem().equals(StatusMensagem.Historico)) {
+                    conversa.setStatusMensagem(StatusMensagem.Historico);
+                    mensagemDao.salvar(conversa);
+                }
+            }
+        }
+    }
+
+    public void removerConversaLista() {
+        List<Mensagem> mensagensParaGravar = getConversasBean().getConversa();
+        if (mensagensParaGravar != null && mensagensParaGravar.size() > 0) {
+            for (Mensagem conversa : mensagensParaGravar) {
+                Calendar diaAnterior = new GregorianCalendar();
+                if (conversa.getDataEnvio().getTimeInMillis() <= (diaAnterior.getTimeInMillis() - 86400000l)
+                        && (conversa.getStatusMensagem().equals(StatusMensagem.Historico))) {
+                    getConversasBean().getConversa().remove(conversa);
+                }
+
+            }
+        }
     }
 
     public Integer getMensagensPendentes() {
@@ -229,7 +219,7 @@ public class ChatBean implements Serializable {
         }
         return msgs;
     }
-    
+
     private List<Mensagem> listaParaCliente(List<Mensagem> mensagens, Usuario destinatario) {
         List<Mensagem> msgs = new ArrayList<Mensagem>();
         for (Mensagem mens : mensagens) {
@@ -238,6 +228,17 @@ public class ChatBean implements Serializable {
             }
         }
         return msgs;
+    }
+
+    public String formataDataHora(Calendar data) {
+        String dataHoraFormatada;
+        String formato = "dd.MM.yyyy HH:mm";
+
+        SimpleDateFormat format = new SimpleDateFormat(formato);
+
+        dataHoraFormatada = format.format(data.getTime());
+
+        return dataHoraFormatada;
     }
 
 }

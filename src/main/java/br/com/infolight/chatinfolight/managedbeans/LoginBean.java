@@ -4,11 +4,15 @@ import br.com.infolight.chatinfolight.entidades.Empresa;
 import br.com.infolight.chatinfolight.entidades.Usuario;
 import br.com.infolight.chatinfolight.persistencia.EmpresaDao;
 import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,7 +27,8 @@ public class LoginBean implements Serializable {
     @Inject
     private UsuarioDao usuarioDao;
     @Inject
-    private EmpresaDao empresaDao;
+    private EmpresaDao empresaDao;    
+    @Inject ChatBean chatBean;
 
     private Usuario usuario;
     private Usuario usuarioLogado;
@@ -61,7 +66,8 @@ public class LoginBean implements Serializable {
         }
 
         usuarioLogado = usuarioDao.logar(getUsuario());
-
+        
+        
         if (usuarioLogado != null) {
             setUsuario(usuarioLogado);
             setLogado(true);
@@ -72,11 +78,18 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public String sair() {
-        setUsuarioLogado(null);
-        setUsuario(new Usuario());
-        setLogado(false);
-        return "/publico/login.xhtml?faces-redirect=true";
+    public void sair() {
+        try {
+            setUsuarioLogado(null);
+            setUsuario(new Usuario());
+            setLogado(false);
+            setLogin(null);
+            setSenha(null);
+            chatBean.salvarConversas();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/ChatInfolight/");            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Usuario getUsuario() {

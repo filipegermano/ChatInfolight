@@ -125,8 +125,8 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 71 * hash + (this.id != null ? this.id.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + (this.dataEnvio != null ? this.dataEnvio.hashCode() : 0);
         return hash;
     }
 
@@ -139,11 +139,11 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
             return false;
         }
         final Mensagem other = (Mensagem) obj;
-        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+        if (this.dataEnvio != other.dataEnvio && (this.dataEnvio == null || !this.dataEnvio.equals(other.dataEnvio))) {
             return false;
         }
         return true;
-    }
+    }   
 
     public int compareTo(Mensagem t) {
         if (this.dataEnvio.getTimeInMillis() < t.dataEnvio.getTimeInMillis()){

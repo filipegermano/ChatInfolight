@@ -29,9 +29,9 @@
         </h:form>
 
         <c:if test="#{loginBean.usuarioLogado.tipoUsuario == 'Consultor'}">
-        <div class="centro">                        
-            <!--usuario-->
-            
+            <div class="centro">                        
+                <!--usuario-->
+
                 <div class="col-lg-9 col-lg-offset-1">
 
                     <div class="col-lg-4">
@@ -129,7 +129,7 @@
                                                             <div class="header">
                                                                 <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
                                                                 <small class="pull-right text-muted">
-                                                                    <span class="glyphicon glyphicon-time"></span>1 min ago
+                                                                    <span class="glyphicon glyphicon-time"></span>#{chatBean.formataDataHora(mensagem.dataEnvio)}
                                                                 </small>
                                                             </div>
                                                             <p>#{mensagem.mensagem}</p>
@@ -151,7 +151,7 @@
                                                         <div class="chat-body clearfix">
                                                             <div class="header">
                                                                 <small class=" text-muted">
-                                                                    <span class="glyphicon glyphicon-time"></span>2 min ago
+                                                                    <span class="glyphicon glyphicon-time"></span>#{chatBean.formataDataHora(mensagem.dataEnvio)}
                                                                 </small>
                                                                 <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
                                                             </div>
@@ -188,8 +188,8 @@
                         </div>
                     </div>
                 </div>            
-            
-        </div>
+
+            </div>
         </c:if>
 
         <!--fim usuario-->                                        
@@ -247,7 +247,7 @@
                                                         <div class="header">
                                                             <strong class="primary-font">#{mensagem.remetente.nome}</strong> 
                                                             <small class="pull-right text-muted">
-                                                                <span class="glyphicon glyphicon-time"></span>1 min ago
+                                                                <span class="glyphicon glyphicon-time"></span>#{chatBean.formataDataHora(mensagem.dataEnvio)}
                                                             </small>
                                                         </div>
                                                         <p>#{mensagem.mensagem}</p>
@@ -269,7 +269,7 @@
                                                     <div class="chat-body clearfix">
                                                         <div class="header">
                                                             <small class=" text-muted">
-                                                                <span class="glyphicon glyphicon-time"></span>2 min ago
+                                                                <span class="glyphicon glyphicon-time"></span>#{chatBean.formataDataHora(mensagem.dataEnvio)}
                                                             </small>
                                                             <strong class="pull-right primary-font">#{mensagem.remetente.nome}</strong>
                                                         </div>
@@ -306,8 +306,14 @@
                     </div>
                 </div>
             </div>            
-        </c:if>
+        </c:if>        
         <!--</div>-->
+        <h:form>
+            <p:poll interval="60" listener="#{chatBean.salvarConversas()}" update="salva_msg_ajax" />
+            <p:outputPanel id="salva_msg_ajax" >
+                #{chatBean.removerConversaLista()}
+            </p:outputPanel>
+        </h:form>
 
     </ui:define>
 </ui:composition>

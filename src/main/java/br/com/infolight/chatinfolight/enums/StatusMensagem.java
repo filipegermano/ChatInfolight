@@ -6,6 +6,6 @@ package br.com.infolight.chatinfolight.enums;
  */
 public enum StatusMensagem {
 
-    Enviado, Entregue
+    Enviado, Entregue, Historico
 
 }

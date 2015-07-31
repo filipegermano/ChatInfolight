@@ -1,7 +1,10 @@
 package br.com.infolight.chatinfolight.entidades;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,11 +25,17 @@ public class Empresa implements Serializable {
     public static final String RECUPERA_POR_CNPJ = "Empresa.recuperaPorCnpj";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 150)
     private String razaoSocial;
+    @Column(length = 150)
     private String nomeFantasia;
+    @Column(length = 20)
     private String cnpj;
+    @Column(length = 100)
     private String municipio;
+    @Column(length = 2)
     private String uf;
 
     public Long getId() {

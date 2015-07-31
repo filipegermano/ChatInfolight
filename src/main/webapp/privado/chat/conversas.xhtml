@@ -17,9 +17,7 @@
         <f:metadata>
             <f:viewParam name="login" value="#{loginBean.login}" />
             <f:viewParam name="senha" value="#{loginBean.senha}" />
-            <f:viewParam name="cnpj" value="#{loginBean.cnpjEmpresa}" />
-            <f:viewParam name="cargo" value="#{loginBean.cargo}" />
-            <f:viewParam name="nome" value="#{loginBean.nome}" />
+            <f:viewParam name="cnpj" value="#{loginBean.cnpjEmpresa}" />            
 
         </f:metadata>
         <h:form>
@@ -40,7 +38,8 @@
                                 <span class="glyphicon glyphicon-user"></span> Usuarios
                             </div>
                             <div class="panel-body">
-                                <ul class="chat">                                    
+                                <ul class="chat">           
+                                    
                                     <c:forEach var="usuario" items="#{chatBean.usuarios}">
                                         <h:form>
                                             <li class="left clearfix">                                            
@@ -67,12 +66,13 @@
                                                             </p:outputPanel>
                                                         </span>
                                                     </div>
-                                                    <p>#{usuario.cargo}, #{usuario.empresa.nomeFantasia}, #{usuario.empresa.municipio} - #{usuario.empresa.uf}</p>
+                                                    <p>#{usuario.empresa.nomeFantasia}, #{usuario.empresa.municipio} - #{usuario.empresa.uf}</p>
                                                 </div>
 
                                             </li>
-                                        </h:form>
+                                        </h:form>    
                                     </c:forEach>                                                                  
+
                                 </ul>
                             </div>
                         </div>

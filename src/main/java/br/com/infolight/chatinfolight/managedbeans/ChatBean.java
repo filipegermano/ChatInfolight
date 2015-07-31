@@ -68,7 +68,7 @@ public class ChatBean implements Serializable {
 
     public void preparaConversa(Usuario remetente, Usuario destinatario) {
         Usuario consultorPadrao = clientesBean.getUsuarioPadrao();
-
+                
         if (remetente.getTipoUsuario().name().equals(TipoUsuario.Consultor.name())) {
             if (destinatario != null) {
                 getDestinatarioBean().setDestinatario(destinatario);

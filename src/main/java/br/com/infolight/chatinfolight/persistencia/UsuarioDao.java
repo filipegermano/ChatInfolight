@@ -11,10 +11,7 @@ import javax.inject.Inject;
  *
  * @author filipe
  */
-public class UsuarioDao extends Dao<Usuario> {
-
-    @Inject
-    private ClientesBean clientesBean;
+public class UsuarioDao extends Dao<Usuario> {    
     
     public UsuarioDao() {
         super(Usuario.class);
@@ -26,16 +23,7 @@ public class UsuarioDao extends Dao<Usuario> {
         parametros.put("senha", usuario.getSenha());
         parametros.put("empresa", usuario.getEmpresa());
 
-        Usuario usuarioLogado = recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_SENHA, parametros);
-        
-        if (usuarioLogado == null){
-            if (usuario.getTipoUsuario() == null) {
-                usuario.setTipoUsuario(TipoUsuario.Cliente);
-            }
-            salvar(usuario);
-            getClientesBean().getUsuarios().add(usuario);
-            usuarioLogado = recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_SENHA, parametros);
-        }
+        Usuario usuarioLogado = recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_SENHA, parametros);                
         
         return usuarioLogado;
     }
@@ -43,9 +31,5 @@ public class UsuarioDao extends Dao<Usuario> {
     public Usuario logar(Usuario usuario) {
         return validaUsuario(usuario);
     }
-
-    public ClientesBean getClientesBean() {
-        return clientesBean;
-    }    
 
 }

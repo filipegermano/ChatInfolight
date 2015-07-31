@@ -23,6 +23,8 @@ import javax.persistence.Transient;
 @NamedQueries(value = {
     @NamedQuery(name = "Usuario.buscaPorLoginSenha",
             query = "SELECT u FROM Usuario u WHERE u.login = :login AND u.senha = :senha AND u.empresa = :empresa"),
+    @NamedQuery(name = "Usuario.buscaPorLoginEmpresa",
+            query = "SELECT u FROM Usuario u WHERE u.login = :login AND u.empresa.cnpj = :cnpj"),
     @NamedQuery(name = "Usuario.listaClientes",
             query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = 'Cliente'"),
     @NamedQuery(name = "Usuario.recuperaPorId",
@@ -38,6 +40,8 @@ public class Usuario implements Serializable {
     @Transient
     public static final String BUSCA_POR_LOGIN_SENHA = "Usuario.buscaPorLoginSenha";
     @Transient
+    public static final String BUSCA_POR_LOGIN_EMPRESA = "Usuario.buscaPorLoginEmpresa";
+    @Transient
     public static final String LISTA_TODOS_CLIENTES = "Usuario.listaClientes";
     @Transient
     public static final String LISTA_PARA_CLIENTE = "Usuario.listaParaCliente";
@@ -47,15 +51,20 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 80)
     private String login;
+    @Column(length = 150)
     private String nome;
+    @Column(length = 40)
     private String senha;
     @ManyToOne
     private Empresa empresa;
     @Column(length = 80)
     private String cargo;    
+    @Column(length = 20)
     @Enumerated(EnumType.STRING)
     private Status status;
+    @Column(length = 20)
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 

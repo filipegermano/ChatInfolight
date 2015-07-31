@@ -64,6 +64,7 @@ public class Mensagem implements Serializable, Comparable<Mensagem> {
     private Calendar dataEnvio = new GregorianCalendar();
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar dataRecebimento;
+    @Column(length = 20)
     @Enumerated(EnumType.STRING)
     private StatusMensagem statusMensagem = StatusMensagem.Enviado;
 

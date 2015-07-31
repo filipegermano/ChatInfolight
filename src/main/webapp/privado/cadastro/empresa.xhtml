@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Cadastrar Empresas</title>
+        <f:metadata>
+            <f:viewParam name="cnpj" value="#{empresaBean.empresa.cnpj}" />
+            <f:viewParam name="nome" value="#{empresaBean.empresa.razaoSocial}" />
+            <f:viewParam name="fantasia" value="#{empresaBean.empresa.nomeFantasia}" />
+            <f:viewParam name="municipio" value="#{empresaBean.empresa.municipio}" />
+            <f:viewParam name="uf" value="#{empresaBean.empresa.uf}" />            
+
+        </f:metadata>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div style="display: none">
+                #{empresaBean.salvar()}
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

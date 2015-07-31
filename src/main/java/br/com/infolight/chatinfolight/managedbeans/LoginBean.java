@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -36,9 +35,7 @@ public class LoginBean implements Serializable {
 
     private String login;
     private String senha;
-    private String cargo;
     private String cnpjEmpresa;
-    private String nome;
 
     public LoginBean() {
         setUsuario(new Usuario());        
@@ -46,14 +43,7 @@ public class LoginBean implements Serializable {
 
     public String logar() {
         getUsuario().setLogin(getLogin());
-        getUsuario().setSenha(getSenha());
-        getUsuario().setCargo(getCargo());
-
-        if (getNome() == null || getNome().equals("")) {
-            getUsuario().setNome(getLogin());
-        } else {
-            getUsuario().setNome(getNome());
-        }
+        getUsuario().setSenha(getSenha());                
 
         if (getCnpjEmpresa() == null || getCnpjEmpresa().equals("")) {
             Map<String, Object> parametros = new HashMap<String, Object>();
@@ -134,15 +124,7 @@ public class LoginBean implements Serializable {
     public void setSenha(String senha) {
         System.out.println(login + " - " + senha);
         this.senha = senha;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
+    }    
 
     public String getCnpjEmpresa() {
         return cnpjEmpresa;
@@ -150,14 +132,6 @@ public class LoginBean implements Serializable {
 
     public void setCnpjEmpresa(String cnpjEmpresa) {
         this.cnpjEmpresa = cnpjEmpresa;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    }    
 
 }

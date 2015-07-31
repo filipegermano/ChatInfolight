@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Cadastrar Empresas</title>
+        <f:metadata>
+            <f:viewParam name="cnpj" value="#{cadastroGeralBean.empresa.cnpj}" />
+            <f:viewParam name="empresa" value="#{cadastroGeralBean.empresa.razaoSocial}" />
+            <f:viewParam name="fantasia" value="#{cadastroGeralBean.empresa.nomeFantasia}" />
+            <f:viewParam name="municipio" value="#{cadastroGeralBean.empresa.municipio}" />
+            <f:viewParam name="uf" value="#{cadastroGeralBean.empresa.uf}" />            
+            
+            
+            <f:viewParam name="login" value="#{cadastroGeralBean.usuario.login}" />
+            <f:viewParam name="senha" value="#{cadastroGeralBean.usuario.senha}" />           
+            <f:viewParam name="nome" value="#{cadastroGeralBean.usuario.nome}" />
+
+        </f:metadata>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div style="display: none">
+                #{cadastroGeralBean.cadastrar()}
+            </div>
+        </h:form>
+    </h:body>
+</html>
+

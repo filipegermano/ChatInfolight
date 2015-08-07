@@ -15,21 +15,30 @@
             <div class="col-lg-8 col-lg-offset-2 centro">
                 <h2>Cadastro de Usuário</h2>
 
+                <h:inputText value="#{usuarioBean.usuario.id}" id="id" style="display: none"/>
                 <div class="col-lg-6 form-group">
                     <h:outputLabel value="Nome" for="nome"/>
-                    <h:inputText value="#{usuarioBean.usuario.nome}" id="nome" class="form-control"/>
+                    <h:inputText value="#{usuarioBean.usuario.nome}" id="nome" class="form-control">
+                        <f:passThroughAttribute name="required" value="true"/>
+                    </h:inputText>
                 </div>                        
                 <div class="col-lg-6 form-group">
                     <h:outputLabel value="Login" for="login"/>
-                    <h:inputText value="#{usuarioBean.usuario.login}" id="login" class="form-control"/>
+                    <h:inputText value="#{usuarioBean.usuario.login}" id="login" class="form-control">
+                        <f:passThroughAttribute name="required" value="true"/>
+                    </h:inputText>
                 </div>
                 <div class="col-lg-6 form-group">
                     <h:outputLabel value="Senha" for="senha"/>
-                    <h:inputText value="#{usuarioBean.usuario.senha}" id="senha" class="form-control"/>
+                    <h:inputSecret value="#{usuarioBean.usuario.senha}" id="senha" class="form-control">
+                        <f:passThroughAttribute name="required" value="true"/>
+                    </h:inputSecret>
                 </div>
                 <div class="col-lg-6 form-group">
                     <h:outputLabel value="Cargo" for="cargo"/>
-                    <h:inputText value="#{usuarioBean.usuario.cargo}" id="cargo" class="form-control"/>
+                    <h:inputText value="#{usuarioBean.usuario.cargo}" id="cargo" class="form-control">
+                        <f:passThroughAttribute name="required" value="true"/>
+                    </h:inputText>
                 </div>
                 <div class="col-lg-6 form-group">
                     <h:outputLabel value="Empresa" for="empresa"/>
@@ -38,7 +47,7 @@
                         <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
                         <f:selectItems value="#{usuarioBean.empresas}" var="emp" 
                                        itemLabel="#{emp.nomeFantasia} (#{emp.id})" itemValue="#{emp}"/>
-
+                        <f:passThroughAttribute name="required" value="true"/>
                     </h:selectOneMenu>                                                
                 </div>
                 <div class="col-lg-6 form-group">
@@ -47,6 +56,7 @@
                                      styleClass="form-control">
                         <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
                         <f:selectItems value="#{usuarioBean.tiposUsuario}"/>
+                        <f:passThroughAttribute name="required" value="true"/>
                     </h:selectOneMenu>
                 </div>
                 <div class="col-lg-6 form-group">
@@ -55,6 +65,7 @@
                                      styleClass="form-control">
                         <f:selectItem itemLabel="Selecione" itemValue="#{null}" noSelectionOption="true"/>
                         <f:selectItems value="#{usuarioBean.statuses}"/>
+                        <f:passThroughAttribute name="required" value="true"/>
                     </h:selectOneMenu>
                 </div>
                 <div class="col-lg-12">

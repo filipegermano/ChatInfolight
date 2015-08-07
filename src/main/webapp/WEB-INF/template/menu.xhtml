@@ -5,46 +5,52 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <ui:composition>       
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">               
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">InfoLight</a>
-                </div>
+        <h:form>
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container-fluid">               
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">InfoLight</a>
+                    </div>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">                        
-                        <li><a href="/ChatInfolight/privado/chat/conversas.xhtml"> Conversas</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastro <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Novo usuário</a></li>
-                                <li><a href="#">Listar usuários</a></li>                        
-                            </ul>
-                        </li>
-                    </ul>                                        
-                    <ul class="nav navbar-nav navbar-right">                        
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{loginBean.usuarioLogado.login} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Editar</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li>                                    
-                                    <h:form>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">                        
+                            <li><a href="/ChatInfolight/privado/chat/conversas.xhtml"> Conversas</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastro <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <h:commandLink action="#{navegacaoBean.usuarioForm()}" value="Novo usuário"/>
+                                    </li>
+                                    <li>
+                                        <h:commandLink action="#{navegacaoBean.usuarioLista()}" value="Listar usuários"/>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>                                        
+                        <ul class="nav navbar-nav navbar-right">                        
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">#{loginBean.usuarioLogado.login} <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>                                        
+                                        <h:commandLink action="#{usuarioBean.alterar(loginBean.usuarioLogado)}" value="Editar" class="link-dropdown-menu"/>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>                                    
                                         <h:commandLink action="#{loginBean.sair()}" value="Sair" class="link-dropdown-menu"/>
-                                    </h:form>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav> <!-- Fim do menu principal -->        
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav> <!-- Fim do menu principal -->        
+        </h:form>
     </ui:composition>>
 
 

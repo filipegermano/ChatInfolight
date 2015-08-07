@@ -6,5 +6,6 @@ package br.com.infolight.chatinfolight.enums;
  */
 public enum Status {
 
-    Ativo, Inativo
+    Ativo, Inativo;
+
 }

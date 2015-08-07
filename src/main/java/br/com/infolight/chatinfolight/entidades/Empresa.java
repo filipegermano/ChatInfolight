@@ -16,14 +16,17 @@ import javax.persistence.Transient;
  */
 @Entity
 @NamedQueries(value = {
-    @NamedQuery(name = "Empresa.recuperaPorCnpj", query = "SELECT e FROM Empresa e WHERE e.cnpj = :cnpj")
+    @NamedQuery(name = "Empresa.recuperaPorCnpj", query = "SELECT e FROM Empresa e WHERE e.cnpj = :cnpj"),
+    @NamedQuery(name = "Empresa.listaTodas", query = "SELECT e FROM Empresa e")
 })
-public class Empresa implements Serializable {
+public class Empresa implements Serializable, Identificavel {
     private static final long serialVersionUID = 1L;
     
     @Transient
     public static final String RECUPERA_POR_CNPJ = "Empresa.recuperaPorCnpj";
-
+    @Transient
+    public static final String LISTA_TODAS = "Empresa.listaTodas";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -84,6 +87,11 @@ public class Empresa implements Serializable {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    @Override
+    public Long getIdentificador() {
+        return getId();
     }
 
 }

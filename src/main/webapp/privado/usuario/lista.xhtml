@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  template="/WEB-INF/template/Layout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"                                  
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                 xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:define name="titulo">Lista de Usuários</ui:define>
+
+    <ui:define name="corpo">        
+
+        <div class="col-lg-8 col-lg-offset-2 centro">
+            <h2>Lista de Usuários</h2>
+            <p:dataTable value="#{usuarioBean.usuarios}" id="lista_usuarios" var="usuario" paginator="true" rows="10">
+                <p:column headerText="Id" width="5%">
+                    <h:outputText value="#{usuario.id}"/>
+                </p:column>
+                <p:column headerText="Cargo">
+                    <h:outputText value="#{usuario.cargo}"/>                
+                </p:column>
+                <p:column headerText="Nome">
+                    <h:outputText value="#{usuario.nome}"/>
+                </p:column>
+                <p:column headerText="Login">
+                    <h:outputText value="#{usuario.login}"/>
+                </p:column>
+                <p:column headerText="Status">
+                    <h:outputText value="#{usuario.status}"/>
+                </p:column>
+                <p:column headerText="Tipo">
+                    <h:outputText value="#{usuario.tipoUsuario}"/>
+                </p:column>
+                <p:column headerText="Empresa" width="30%">
+                    <h:outputText value="#{usuario.empresa.nomeFantasia}"/>
+                </p:column>
+                <p:column headerText="Alterar" >
+                    <h:form>
+                        <h:commandLink action="#{usuarioBean.alterar(usuario)}" class="col-lg-4">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </h:commandLink>       
+                        
+                        <h:commandLink action="#{usuarioBean.remover(usuario)}" class="col-lg-4">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </h:commandLink>                        
+                    </h:form>
+                </p:column>                
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
+

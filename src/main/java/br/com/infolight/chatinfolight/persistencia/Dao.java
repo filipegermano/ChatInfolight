@@ -37,6 +37,10 @@ public class Dao<T> implements Serializable {
         manager.remove(id);
         manager.getTransaction().commit();
     }
+    
+    public T buscaPorId(Long id){
+        return manager.find(classe, id);
+    }
 
     public List<T> listar(String namedQuery) {
 //        manager.getTransaction().begin();

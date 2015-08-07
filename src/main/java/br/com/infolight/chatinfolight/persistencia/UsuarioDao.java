@@ -1,11 +1,8 @@
 package br.com.infolight.chatinfolight.persistencia;
 
 import br.com.infolight.chatinfolight.entidades.Usuario;
-import br.com.infolight.chatinfolight.enums.TipoUsuario;
-import br.com.infolight.chatinfolight.managedbeans.ClientesBean;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Inject;
 
 /**
  *
@@ -23,7 +20,7 @@ public class UsuarioDao extends Dao<Usuario> {
         parametros.put("senha", usuario.getSenha());
         parametros.put("empresa", usuario.getEmpresa());
 
-        Usuario usuarioLogado = recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_SENHA, parametros);                
+        Usuario usuarioLogado = recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_SENHA, parametros);
         
         return usuarioLogado;
     }

@@ -35,6 +35,6 @@ public class Cargo implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
+    }   
 
 }

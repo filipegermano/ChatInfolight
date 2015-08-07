@@ -7,8 +7,8 @@ import br.com.infolight.chatinfolight.enums.TipoUsuario;
 import br.com.infolight.chatinfolight.persistencia.EmpresaDao;
 import br.com.infolight.chatinfolight.persistencia.UsuarioDao;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,37 +27,29 @@ public class UsuarioBean implements Serializable {
     private EmpresaDao empresaDao;
 
     private Usuario usuario;
-    private String cnpjEmpresa;
+    private Empresa empresaSelecionada;
+    private List<Empresa> empresas;
+    private List<Usuario> usuarios;   
 
-    public UsuarioBean() {
+    @PostConstruct
+    public void init() {
         setUsuario(new Usuario());
+        setEmpresas(empresaDao.listar(Empresa.LISTA_TODAS));
+        setUsuarios(usuarioDao.listar(Usuario.LISTA_TODOS));
+        getEmpresas().forEach(System.out::println);
     }
 
     public void salvar() {
-        if (getUsuario().getLogin() != null) {
-            Map<String, Object> parametros = new HashMap<String, Object>();
-            parametros.put("cnpj", getCnpjEmpresa());
-            parametros.put("login", getUsuario().getLogin());
-
-            Usuario usuarioBd = usuarioDao.recuperaPorParametros(Usuario.BUSCA_POR_LOGIN_EMPRESA, parametros);
-
-            if (usuarioBd == null) {                
-                Map<String, Object> param = new HashMap<String, Object>();
-                param.put("cnpj", getCnpjEmpresa());                
-                System.out.println("cnpj > "+getCnpjEmpresa());
-                
-                getUsuario().setEmpresa(empresaDao.recuperaPorParametros(Empresa.RECUPERA_POR_CNPJ, param));
-                getUsuario().setStatus(Status.Ativo);
-                getUsuario().setTipoUsuario(TipoUsuario.Cliente);
-                usuarioDao.salvar(getUsuario());
-            } else {
-                usuarioDao.alterar(usuarioBd);
-            }            
+        if (getUsuario().getId() == null){
+            usuarioDao.salvar(getUsuario());
+        } else {
+            usuarioDao.alterar(getUsuario());
         }
-    }
-    
-    public void salvaEmpresaUsuario(){
         
+    }
+
+    public void salvaEmpresaUsuario() {
+
     }
 
     public Usuario getUsuario() {
@@ -68,12 +60,49 @@ public class UsuarioBean implements Serializable {
         this.usuario = usuario;
     }
 
-    public String getCnpjEmpresa() {
-        return cnpjEmpresa;
+    public Empresa getEmpresaSelecionada() {
+        return empresaSelecionada;
     }
 
-    public void setCnpjEmpresa(String cnpjEmpresa) {
-        this.cnpjEmpresa = cnpjEmpresa;
+    public void setEmpresaSelecionada(Empresa empresaSelecionada) {
+        this.empresaSelecionada = empresaSelecionada;
+    }
+
+    public List<Empresa> getEmpresas() {
+        return empresas;
+    }
+
+    public void setEmpresas(List<Empresa> empresas) {
+        this.empresas = empresas;
+    }
+
+    public TipoUsuario[] getTiposUsuario() {
+        return TipoUsuario.values();
+    }
+
+    public Status[] getStatuses() {
+        return Status.values();
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+    
+    public String alterar(Usuario usuario){
+                   
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("/ChatInfolight/privado/usuario/form.xhtml");
+            setUsuario(usuario);
+        return "/privado/usuario/form.xhtml";
+    }
+    
+    public String remover(Usuario usuario){        
+        usuarioDao.remover(usuario);
+        setUsuarios(usuarioDao.listar(Usuario.LISTA_TODOS));
+        return "/privado/usuario/lista.xhtml";
     }
 
 }

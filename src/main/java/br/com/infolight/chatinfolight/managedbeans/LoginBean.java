@@ -76,7 +76,7 @@ public class LoginBean implements Serializable {
             setLogin(null);
             setSenha(null);
             chatBean.salvarConversas();
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/ChatInfolight/");            
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/ChatInfolight/");
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }

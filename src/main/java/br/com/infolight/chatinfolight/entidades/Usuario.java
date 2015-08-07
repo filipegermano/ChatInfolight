@@ -30,7 +30,9 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Usuario.recuperaPorId",
             query = "SELECT u FROM Usuario u WHERE u.id = :id"),
     @NamedQuery(name = "Usuario.listaParaCliente",
-            query = "SELECT u FROM Usuario u WHERE u.id = 1")
+            query = "SELECT u FROM Usuario u WHERE u.id = 1"),
+    @NamedQuery(name = "Usuario.listaTodos",
+            query = "SELECT u FROM Usuario u")
 
 })
 public class Usuario implements Serializable {
@@ -47,6 +49,9 @@ public class Usuario implements Serializable {
     public static final String LISTA_PARA_CLIENTE = "Usuario.listaParaCliente";
     @Transient
     public static final String RECUPERA_POR_ID = "Usuario.recuperaPorId";
+    @Transient
+    public static final String LISTA_TODOS = "Usuario.listaTodos";
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
